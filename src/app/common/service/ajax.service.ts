@@ -99,7 +99,7 @@ export class AjaxService {
     } else {
       if (AjaxService.isDebug) {
 
-        window.location.href = '/login';
+        window.location.href = '/#/login';
         console.error("Message Error => ", err, caught);
       }
     }
