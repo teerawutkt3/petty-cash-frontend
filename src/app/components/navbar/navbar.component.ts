@@ -30,6 +30,7 @@ export class NavbarComponent implements OnInit {
       username: '',
       name: '',
       department: '',
+      userStatus: '',
       role: [],
     }
   }

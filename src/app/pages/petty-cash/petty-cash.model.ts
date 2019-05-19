@@ -6,6 +6,7 @@ export interface PettyCash {
   description: string;
   amount: string;
   status: string;
+  employeeStatus:string;
   statusDesc: string;
   craeteDatetime: string;
   updateDatetime: string;

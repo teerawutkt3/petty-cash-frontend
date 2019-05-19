@@ -149,7 +149,7 @@
                 [disabled]="idCheck.length == 0" data-toggle="modal" data-target="#saummaryModal">
                 <i class="fa fa-credit-card"></i> เบิกเงิน</button>
               <button *ngIf="showBtnNormal" type="button" routerLink="/petty-cash/request-withdraw/add"
-                class="btn btn-sm btn-success"><i class="fa fa-plus-circle"></i> เพิ่ม</button>
+                class="btn btn-sm btn-success" [disabled]="showBtnAdd"><i class="fa fa-plus-circle"></i> เพิ่ม</button>
             </div>
           </div>
         </div>
@@ -166,6 +166,7 @@
                 <th class="text-left" scope="col">รายละเอียด</th>
                 <th class="text-center" scope="col">วันที่สร้าง</th>
                 <th class="text-center" scope="col">สถานนะ</th>
+                <th *ngIf="!showBtnAdd" class="text-center" scope="col">สถานนะการทำงาน</th>
                 <th class="text-center" *ngIf="tdShowButton"></th>
               </tr>
             </thead>
@@ -180,23 +181,26 @@
                 <td class="text-left">{{item.description}}</td>
                 <td class="text-center">{{item.createDatetime}}</td>
                 <td class="text-center">{{item.statusDesc}}</td>
+                <td *ngIf="!showBtnAdd" class="text-center">{{item.employeeStatus | toText}}</td>
                 <td class="text-center" *ngIf="tdShowButton">
                   <button *ngIf="showBtnManager" (click)="approve(item.id,'2')" class="btn btn-success btn-sm"
-                    type="button" title="อนุมัติ" [disabled]="item.status == 5 || item.status == 4 || item.status == 2">
+                    type="button" title="อนุมัติ"
+                    [disabled]="item.status == 5 || item.status == 4 || item.status == 2 || item.employeeStatus==2">
                     <i class="fa fa-check"></i>
                   </button>
                   <button *ngIf="showBtnManager" (click)="notapprove(item.id,'3')" class="btn btn-danger btn-sm"
-                    type="button" [disabled]="item.status == 5 || item.status == 3 || item.status == 4"
+                    type="button"
+                    [disabled]="item.status == 5 || item.status == 3 || item.status == 4 ||  item.employeeStatus==2"
                     title="ไม่อนุมัติ" data-toggle="modal" data-target="#notApproveModal">
                     <i class="fa fa-times" aria-hidden="true"></i>
                   </button>
                   <button *ngIf="showBtnNormal" (click)="edit(item.id)" class="btn btn-warning btn-sm" type="button"
-                    title="แก้ไข" [disabled]="item.status == 2 || item.status == 5">
+                    title="แก้ไข" [disabled]="item.status == 2 || item.status == 5 || item.employeeStatus==2">
                     <i class="fa fa-pencil-square-o"></i>
                   </button>
                   <button *ngIf="showBtnNormal" (click)="cancel(item.id,'4')" class="btn btn-danger btn-sm"
                     type="button" title="ยกเลิก" data-toggle="modal" data-target="#deleteModal"
-                    [disabled]="item.status == 2 || item.status == 4 || item.status == 5">
+                    [disabled]="item.status == 2 || item.status == 4 || item.status == 5 || item.employeeStatus==2">
                     <i class="fa fa-times" aria-hidden="true"></i>
                   </button>
 

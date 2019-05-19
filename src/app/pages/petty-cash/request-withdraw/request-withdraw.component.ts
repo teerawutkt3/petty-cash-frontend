@@ -35,6 +35,8 @@ export class RequestWithdrawComponent implements OnInit {
   showBtnManager: boolean = false;
   showBtnNormal: boolean = false;
   showBtnFinance: boolean = false;
+
+  showBtnAdd: boolean = false;
   constructor(
     private ajax: AjaxService,
     private router: Router,
@@ -49,14 +51,15 @@ export class RequestWithdrawComponent implements OnInit {
       console.log('res.role', res.role)
       this.tdShowButton = res.role.includes("ROLE_MANAMENT") || res.role.includes("ROLE_NORMAL");
       this.tdShowCheckbox = res.role.includes('ROLE_PETTY_CASH');
-      this.showBtnManager = res.role.includes('ROLE_MANAMENT')
-      this.showBtnNormal = res.role.includes('ROLE_NORMAL')
-      this.showBtnFinance = res.role.includes('ROLE_PETTY_CASH')
+      this.showBtnManager = res.role.includes('ROLE_MANAMENT');
+      this.showBtnNormal = res.role.includes('ROLE_NORMAL');
+      this.showBtnFinance = res.role.includes('ROLE_PETTY_CASH');
+      this.showBtnAdd = res.userStatus == '2'; // 2 = ลาออก
     })
     this.getPettyCashList();
   }
 
-  cardClick(status){
+  cardClick(status) {
     console.log('status', status)
     this.status = status;
     this.getPettyCashList()
@@ -96,7 +99,7 @@ export class RequestWithdrawComponent implements OnInit {
   }
 
   getPettyCashList() {
-    this.ajax.doPost('petty-cash/findPettey',{status : this.status}).subscribe((res: ResponseData<PettyCashResVo>) => {
+    this.ajax.doPost('petty-cash/findPettey', { status: this.status }).subscribe((res: ResponseData<PettyCashResVo>) => {
       if (MessageService.MSG.SUCCESS == res.status) {
         console.log('res', res)
         this.countWait = res.data.countWait;
@@ -172,7 +175,10 @@ class AppState {
   main: {
     user: {
       username: string;
-      role: string[]
+      role: string[];
+      name: string;
+      department: string;
+      userStatus: string;
     }
   }
 

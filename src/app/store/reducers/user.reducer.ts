@@ -5,7 +5,8 @@ const INIT_DATA: UserProflie = {
   username: '',
   role: [],
   name: '',
-  department: ''
+  department: '',
+  userStatus: ''
 };
 
 export function UserReducer(state: UserProflie = INIT_DATA, action: UserAction.Actions) {

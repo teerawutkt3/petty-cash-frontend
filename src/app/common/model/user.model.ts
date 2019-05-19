@@ -11,6 +11,7 @@ export interface UserProflie {
   username: string;
   name: string;
   department: string;
+  userStatus: string;
   role: any[];
 }
 
