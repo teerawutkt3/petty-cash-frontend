@@ -25,6 +25,7 @@ export class RequestWithdrawComponent implements OnInit {
   countSuccess: number;
   idCheck: string[] = [];
 
+  description: string = ''
   amountSum: number = 0;
 
   dataStroe: any;
@@ -139,6 +140,7 @@ export class RequestWithdrawComponent implements OnInit {
   confirm() {
     console.log('confirm', this.id);
     this.ajax.doPost(`petty-cash/${this.id}/${this.status}`, {}).subscribe((res: ResponseData<any>) => {
+      this.status = '';
       this.getPettyCashList();
     });
   }
@@ -168,6 +170,13 @@ export class RequestWithdrawComponent implements OnInit {
         console.log('Error withdraw!!!', res.message)
       }
     });
+  }
+
+  detail(id) {
+    let pettyCash = this.pettyCashList.filter(e => e.id == id)
+    if (pettyCash.length != 0) {
+      this.description = pettyCash[0].description;
+    }
   }
 }
 
