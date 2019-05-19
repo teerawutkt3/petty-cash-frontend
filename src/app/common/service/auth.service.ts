@@ -1,14 +1,14 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import * as moment from 'moment';
 import { Observable, Subject } from "rxjs";
-import { catchError, map } from 'rxjs/operators';
 // model
 import { AjaxService } from "./ajax.service";
 import { MessageService } from './message.service';
 import _ from 'lodash';
 import { User, UserModel, UserProflie } from "../model/user.model";
 import { ResponseData } from "../response-data.model";
+import { Store } from "@ngrx/store";
+
 
 declare var $: any;
 
@@ -41,17 +41,15 @@ export class AuthService {
         this.LOGIN_URL,
         body,
         res => {
-          //this.isLoggedIn = true;
           console.log('login res => ', res)
-          //this.router.navigate(["/home"]);
-          //this.router.navigate['/petty-cash/request-withdraw'];
-          this.getUserProfile().subscribe(res=>{
+          this.getUserProfile().subscribe(res => {
+            console.log('getUserProfile sub', res)
             this.router.navigate(['/petty-cash/request-withdraw'])
           });
           resolve("OK");
         },
         (resp: Response) => {
-         // this.isLoggedIn = false;
+          // this.isLoggedIn = false;
           console.log('login resp', resp)
           reject("FAIL");
         },
@@ -70,11 +68,10 @@ export class AuthService {
     });
   }
 
-  getUserProfile():Observable<any>{
-    return new Observable(obs=>{
-      this.ajaxService.doGet('user/profile').subscribe((res:ResponseData<UserProflie>)=>{
-        console.log('getUserProfile : ', res)
-        this.userProflie = res.data
+  getUserProfile(): Observable<any> {
+    return new Observable(obs => {
+      this.ajaxService.doGet('user/profile').subscribe((res: any) => {
+        this.userProflie = res
         obs.next(this.userProflie);
       })
     })

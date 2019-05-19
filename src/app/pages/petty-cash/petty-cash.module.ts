@@ -11,9 +11,9 @@ const routes = [
   declarations: [PettyCashComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
   ],
-  exports:[
+  exports: [
     RouterModule
   ]
 })

@@ -1,10 +1,10 @@
-<div class="header bg-gradient-warning pb-8 pt-5 pt-md-8">
+<div class="header bg-gradient-success pb-8 pt-5 pt-md-8">
   <div class="container-fluid">
     <div class="header-body">
       <!-- Card stats -->
       <div class="row">
         <div class="col-xl-3 col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0" style="cursor: pointer;">
+          <div class="card card-stats mb-4 mb-xl-0" style="cursor: pointer;" (click)="cardClick('')">
             <div class="card-body">
               <div class="row">
                 <div class="col">
@@ -24,8 +24,8 @@
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0" style="cursor: pointer;">
+        <div class="col-xl-3 col-lg-6" *ngIf="!showBtnFinance">
+          <div class="card card-stats mb-4 mb-xl-0" style="cursor: pointer;" (click)="cardClick('1')">
             <div class="card-body">
               <div class="row">
                 <div class="col">
@@ -45,8 +45,8 @@
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0" style="cursor: pointer;">
+        <div class="col-xl-3 col-lg-6" *ngIf="!showBtnFinance">
+          <div class="card card-stats mb-4 mb-xl-0" style="cursor: pointer;" (click)="cardClick('2')">
             <div class="card-body">
               <div class="row">
                 <div class="col">
@@ -66,8 +66,8 @@
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0" style="cursor: pointer;">
+        <div class="col-xl-3 col-lg-6" *ngIf="!showBtnFinance">
+          <div class="card card-stats mb-4 mb-xl-0" style="cursor: pointer;" (click)="cardClick('3')">
             <div class="card-body">
               <div class="row">
                 <div class="col">
@@ -89,8 +89,8 @@
         </div>
       </div>
       <div class="row mt-3">
-        <div class="col-xl-3 col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0" style="cursor: pointer;">
+        <div class="col-xl-3 col-lg-6" *ngIf="!showBtnFinance">
+          <div class="card card-stats mb-4 mb-xl-0" style="cursor: pointer;" (click)="cardClick('4')">
             <div class="card-body">
               <div class="row">
                 <div class="col">
@@ -110,8 +110,8 @@
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0" style="cursor: pointer;">
+        <div class="col-xl-3 col-lg-6" *ngIf="!showBtnFinance">
+          <div class="card card-stats mb-4 mb-xl-0" style="cursor: pointer;" (click)="cardClick('5')">
             <div class="card-body">
               <div class="row">
                 <div class="col">
@@ -145,10 +145,11 @@
               <h3 class="mb-0">รายการขอเบิก</h3>
             </div>
             <div class="col text-right">
-              <button type="button" class="btn btn-sm btn-info" (click)="withdraw()" [disabled]="idCheck.length == 0">
+              <button *ngIf="showBtnFinance" type="button" class="btn btn-sm btn-info" (click)="summary()"
+                [disabled]="idCheck.length == 0" data-toggle="modal" data-target="#saummaryModal">
                 <i class="fa fa-credit-card"></i> เบิกเงิน</button>
-              <button type="button" routerLink="/petty-cash/request-withdraw/add" class="btn btn-sm btn-success"><i
-                  class="fa fa-plus-circle"></i> เพิ่ม</button>
+              <button *ngIf="showBtnNormal" type="button" routerLink="/petty-cash/request-withdraw/add"
+                class="btn btn-sm btn-success"><i class="fa fa-plus-circle"></i> เพิ่ม</button>
             </div>
           </div>
         </div>
@@ -157,47 +158,52 @@
           <table class="table align-items-center table-flush">
             <thead class="thead-light">
               <tr>
-                <th class="text-center"><input type="checkbox" (click)="checkAll($event)"></th>
+                <th class="text-center" *ngIf="tdShowCheckbox"><input type="checkbox" (click)="checkAll($event)"></th>
                 <th class="text-center" scope="col">#</th>
                 <th class="text-left" scope="col">รหัสอ้างอิง</th>
-                <th class="text-left" scope="col">ชื่อ - สกุล</th>
+                <th *ngIf="!showBtnNormal" class="text-left" scope="col">ชื่อ - สกุล</th>
                 <th class="text-right" scope="col">จำนวนงินที่ขอเบิก</th>
                 <th class="text-left" scope="col">รายละเอียด</th>
                 <th class="text-center" scope="col">วันที่สร้าง</th>
                 <th class="text-center" scope="col">สถานนะ</th>
-                <th class="text-center"></th>
+                <th class="text-center" *ngIf="tdShowButton"></th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of pettyCashList; let i=index">
-                <td class="text-center"><input class="checkbox" type="checkbox" id="{{item.id}}"
+                <td class="text-center" *ngIf="tdShowCheckbox"><input class="checkbox" type="checkbox" id="{{item.id}}"
                     (change)="check($event.target.value)" value="{{item.id}}"></td>
                 <td class="text-center">{{i+1}}</td>
                 <td class="text-left">{{item.code}}</td>
-                <td class="text-left">{{item.name}}</td>
+                <td *ngIf="!showBtnNormal" class="text-left">{{item.name}}</td>
                 <td class="text-right">{{item.amount | decimalFormat:"###,###.00"  }}</td>
                 <td class="text-left">{{item.description}}</td>
                 <td class="text-center">{{item.createDatetime}}</td>
                 <td class="text-center">{{item.statusDesc}}</td>
-                <td class="text-center">
-                  <button (click)="approve(item.id,'2')" class="btn btn-primary btn-sm" type="button" title="อนุมัติ"
-                    [disabled]="item.status == 4">
-                    <i class="fa fa-check-circle-o"></i>
+                <td class="text-center" *ngIf="tdShowButton">
+                  <button *ngIf="showBtnManager" (click)="approve(item.id,'2')" class="btn btn-success btn-sm"
+                    type="button" title="อนุมัติ" [disabled]="item.status == 5 || item.status == 4 || item.status == 2">
+                    <i class="fa fa-check"></i>
                   </button>
-                  <button (click)="notapprove(item.id,'3')" class="btn btn-danger btn-sm" type="button"
+                  <button *ngIf="showBtnManager" (click)="notapprove(item.id,'3')" class="btn btn-danger btn-sm"
+                    type="button" [disabled]="item.status == 5 || item.status == 3 || item.status == 4"
                     title="ไม่อนุมัติ" data-toggle="modal" data-target="#notApproveModal">
-                    <i class="fa fa-times-circle-o"></i>
+                    <i class="fa fa-times" aria-hidden="true"></i>
                   </button>
-                  <button (click)="edit(item.id)" class="btn btn-warning btn-sm" type="button" title="แก้ไข"
-                    [disabled]="item.status == 2">
+                  <button *ngIf="showBtnNormal" (click)="edit(item.id)" class="btn btn-warning btn-sm" type="button"
+                    title="แก้ไข" [disabled]="item.status == 2 || item.status == 5">
                     <i class="fa fa-pencil-square-o"></i>
                   </button>
-                  <button (click)="cancel(item.id,'4')" class="btn btn-danger btn-sm" type="button" title="ยกเลิก"
-                    data-toggle="modal" data-target="#deleteModal" [disabled]="item.status == 2">
-                    <i class="fa fa-times-circle-o"></i>
+                  <button *ngIf="showBtnNormal" (click)="cancel(item.id,'4')" class="btn btn-danger btn-sm"
+                    type="button" title="ยกเลิก" data-toggle="modal" data-target="#deleteModal"
+                    [disabled]="item.status == 2 || item.status == 4 || item.status == 5">
+                    <i class="fa fa-times" aria-hidden="true"></i>
                   </button>
 
                 </td>
+              </tr>
+              <tr *ngIf="pettyCashList.length == 0">
+                <td colspan="8" class="text-center">ไม่พบข้อมูล</td>
               </tr>
             </tbody>
           </table>
@@ -254,6 +260,34 @@
       <!-- Modal footer -->
       <div class="modal-footer">
         <button type="button" (click)="confirm()" class="btn btn-success bnt-sm" data-dismiss="modal">ตกลง</button>
+        <button type="button" class="btn btn-danger bnt-sm" data-dismiss="modal">ปิด</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- The Modal Summary -->
+<div class="modal" id="saummaryModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">รวมยอดเงิน</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <p>{{idCheck.length}} รายการ</p>
+        <p>{{amountSum | decimalFormat:"###,###.00" }} บาท</p>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" (click)="withdraw()" class="btn btn-success bnt-sm" data-dismiss="modal">ตกลง</button>
         <button type="button" class="btn btn-danger bnt-sm" data-dismiss="modal">ปิด</button>
       </div>
 

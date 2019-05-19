@@ -4,7 +4,9 @@ import { Location, LocationStrategy, PathLocationStrategy } from '@angular/commo
 import { Router } from '@angular/router';
 import { AjaxService } from 'src/app/common/service/ajax.service';
 import { AuthService } from 'src/app/common/service/auth.service';
-
+import * as MAINATION from "../../store/actions/user.action";
+import { Store } from '@ngrx/store';
+import { UserProflie } from 'src/app/common/model/user.model';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -14,18 +16,31 @@ export class NavbarComponent implements OnInit {
   public focus;
   public listTitles: any[];
   public location: Location;
+  userProfile: UserProflie;
   constructor(
     location: Location,
     private element: ElementRef,
     private router: Router,
     private ajax: AjaxService,
-    private authService : AuthService
+    private authService: AuthService,
+    private store: Store<any>
   ) {
     this.location = location;
+    this.userProfile = {
+      username: '',
+      name: '',
+      department: '',
+      role: [],
+    }
   }
 
   ngOnInit() {
     this.listTitles = ROUTES.filter(listTitle => listTitle);
+
+    this.store.select(state => state.main.user).subscribe(res => {
+      console.log('Navbar res: ', res)
+      this.userProfile = res;
+    })
   }
   getTitle() {
     var titlee = this.location.prepareExternalUrl(this.location.path());
@@ -41,7 +56,9 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
+    this.store.dispatch(new MAINATION.RemoveUser());
     this.authService.logout();
   }
+
 
 }

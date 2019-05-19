@@ -4,6 +4,7 @@ import { ResponseData } from 'src/app/common/response-data.model';
 import { MessageService } from 'src/app/common/service/message.service';
 import { PettyCash, PettyCashResVo } from '../petty-cash.model';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 declare var $: any;
 
 @Component({
@@ -24,13 +25,41 @@ export class RequestWithdrawComponent implements OnInit {
   countSuccess: number;
   idCheck: string[] = [];
 
+  amountSum: number = 0;
+
+  dataStroe: any;
+  tdShowButton: boolean = true;
+  tdShowCheckbox: boolean = false;
+
+  // show button
+  showBtnManager: boolean = false;
+  showBtnNormal: boolean = false;
+  showBtnFinance: boolean = false;
   constructor(
     private ajax: AjaxService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private store: Store<AppState>
+  ) {
+    this.pettyCashList = [];
+  }
 
   ngOnInit() {
+    this.dataStroe = this.store.select(state => state.main.user).subscribe(res => {
+      console.log('store => ', res)
+      console.log('res.role', res.role)
+      this.tdShowButton = res.role.includes("ROLE_MANAMENT") || res.role.includes("ROLE_NORMAL");
+      this.tdShowCheckbox = res.role.includes('ROLE_PETTY_CASH');
+      this.showBtnManager = res.role.includes('ROLE_MANAMENT')
+      this.showBtnNormal = res.role.includes('ROLE_NORMAL')
+      this.showBtnFinance = res.role.includes('ROLE_PETTY_CASH')
+    })
     this.getPettyCashList();
+  }
+
+  cardClick(status){
+    console.log('status', status)
+    this.status = status;
+    this.getPettyCashList()
   }
 
   checkAll(e) {
@@ -67,7 +96,7 @@ export class RequestWithdrawComponent implements OnInit {
   }
 
   getPettyCashList() {
-    this.ajax.doGet('petty-cash/').subscribe((res: ResponseData<PettyCashResVo>) => {
+    this.ajax.doPost('petty-cash/findPettey',{status : this.status}).subscribe((res: ResponseData<PettyCashResVo>) => {
       if (MessageService.MSG.SUCCESS == res.status) {
         console.log('res', res)
         this.countWait = res.data.countWait;
@@ -112,15 +141,39 @@ export class RequestWithdrawComponent implements OnInit {
   }
 
 
+  summary() {
+    let sum = 0;
+    this.idCheck.forEach(id => {
+      let petty = this.pettyCashList.filter(pettyCash => pettyCash.id == id);
+      if (petty.length != 0) {
+        let amount = petty[0].amount;
+        sum += Number(amount);
+      }
+    });
+    this.amountSum = sum;
+    console.log('sum', sum)
+  }
+
   withdraw() {
-    console.log('withdraw')
+    console.log('withdraw idCheck=>', this.idCheck)
     this.ajax.doPost('petty-cash/withdraw', { ids: this.idCheck }).subscribe((res: ResponseData<any>) => {
       if (MessageService.MSG.SUCCESS == res.status) {
         console.log('withdraw res', res.message)
+        this.idCheck = [];
         this.getPettyCashList();
       } else {
         console.log('Error withdraw!!!', res.message)
       }
     });
   }
+}
+
+class AppState {
+  main: {
+    user: {
+      username: string;
+      role: string[]
+    }
+  }
+
 }

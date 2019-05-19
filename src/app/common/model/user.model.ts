@@ -9,6 +9,8 @@ export class User {
 
 export interface UserProflie {
   username: string;
+  name: string;
+  department: string;
   role: any[];
 }
 

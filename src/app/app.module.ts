@@ -15,8 +15,10 @@ import { ComponentsModule } from './components/components.module';
 import { AjaxService } from './common/service/ajax.service';
 import { MessageService } from './common/service/message.service';
 import { HttpModule } from '@angular/http';
-import { AuthService } from './common/service/auth.service';
-
+import { AuthService } from './common/service/auth.service';import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { reducers } from './app.reducers';
+;
 
 @NgModule({
   imports: [
@@ -28,7 +30,12 @@ import { AuthService } from './common/service/auth.service';
     NgbModule,
     RouterModule,
     AppRoutingModule,
-    HttpModule
+    HttpModule,
+    StoreModule.forRoot({}),
+    StoreModule.forFeature('main', reducers),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+    }),
   ],
   declarations: [
     AppComponent,

@@ -20,9 +20,9 @@
         <a class="nav-link pr-0" role="button" ngbDropdownToggle>
           <div class="media align-items-center">
               <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-            <!-- <div class="media-body ml-2 d-none d-lg-block">
-              <span class="mb-0 text-sm  font-weight-bold">Jessica Jones</span>
-            </div> -->
+            <div class="media-body ml-2 d-none d-lg-block">
+              <span class="mb-0 text-sm  font-weight-bold">{{userProfile.username}}<br>{{userProfile.name}} ({{userProfile.department}})</span>
+            </div>
           </div>
         </a>
         <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>
