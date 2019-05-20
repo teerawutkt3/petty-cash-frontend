@@ -166,7 +166,7 @@
                 <th class="text-left" scope="col">รายละเอียด</th>
                 <th class="text-center" scope="col">วันที่สร้าง</th>
                 <th class="text-center" scope="col">สถานนะ</th>
-                <th *ngIf="!showBtnAdd" class="text-center" scope="col">สถานนะการทำงาน</th>
+                <th *ngIf="showBtnManager" class="text-center" scope="col">สถานนะการทำงาน</th>
                 <th class="text-center" *ngIf="tdShowButton"></th>
               </tr>
             </thead>
@@ -190,7 +190,7 @@
                 </td>
                 <td class="text-center">{{item.createDatetime}}</td>
                 <td class="text-center">{{item.statusDesc}}</td>
-                <td *ngIf="!showBtnAdd" class="text-center">{{item.employeeStatus | toText}}</td>
+                <td *ngIf="showBtnManager" class="text-center">{{item.employeeStatus | toText}}</td>
                 <td class="text-center" *ngIf="tdShowButton">
                   <button *ngIf="showBtnManager" (click)="approve(item.id,'2')" class="btn btn-success btn-sm"
                     type="button" title="อนุมัติ"
