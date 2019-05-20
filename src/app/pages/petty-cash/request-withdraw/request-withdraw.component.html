@@ -179,10 +179,14 @@
                 <td *ngIf="!showBtnNormal" class="text-left">{{item.name}}</td>
                 <td class="text-right">{{item.amount | decimalFormat:"###,###.00"  }}</td>
                 <td class="text-center">
-                  <button (click)="detail(item.id)" class="btn btn-info btn-sm" type="button" title="รายละเอียด"
-                    data-toggle="modal" data-target="#detail">
+                  <button class="btn btn-info btn-sm" type="button" title="รายละเอียด"
+                  [routerLink]="['/petty-cash/request-withdraw/detail']" [queryParams]="{ id: item.id }">
                     <i class="fa fa-eye"></i>
                   </button>
+                  <!-- <button (click)="detail(item.id)" class="btn btn-info btn-sm" type="button" title="รายละเอียด"
+                    data-toggle="modal" data-target="#detail">
+                    <i class="fa fa-eye"></i>
+                  </button> -->
                 </td>
                 <td class="text-center">{{item.createDatetime}}</td>
                 <td class="text-center">{{item.statusDesc}}</td>

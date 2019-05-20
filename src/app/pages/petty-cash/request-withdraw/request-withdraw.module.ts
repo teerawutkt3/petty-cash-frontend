@@ -6,7 +6,9 @@ import { PipeModule } from 'src/app/common/pipe/pipe.module';
 
 const routes = [
   { path: '', component: RequestWithdrawComponent },
-  { path: 'add', loadChildren: './add/add.module#AddModule'}
+  { path: 'add', loadChildren: './add/add.module#AddModule'},
+  { path: 'detail', loadChildren: './detail/detail.module#DetailModule'},
+  { path: 'summary', loadChildren: './summary/summary.module#SummaryModule'}
 ]
 
 @NgModule({
