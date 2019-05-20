@@ -140,13 +140,13 @@
                <b>ชื่อ:</b> {{pettyCash.name}}
               </div>
               <div class="col col-sm-6">
-               <b>สถานะการทำงาน:</b> {{pettyCash.employeeStatus}}
+               <b>สถานะการทำงาน:</b> {{pettyCash.employeeStatus | toText}}
               </div>
             </div>
 
 
 
-          <b>จำนวนเงิน:</b> {{pettyCash.amount}} บาท<br>
+          <b>จำนวนเงิน:</b> {{pettyCash.amount  | decimalFormat:"###,###.00"}} บาท<br>
           <b>รายละเอียด:</b> {{pettyCash.description}}<br><br><br>
           <b>สร้างเมื่อ:</b> {{pettyCash.createDatetime}}<br>
           <b>แก้ไขเมื่อ:</b> {{pettyCash.updateDatetime}}<br>

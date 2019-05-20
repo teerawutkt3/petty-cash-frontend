@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DetailComponent } from './detail.component';
 import { RouterModule } from '@angular/router';
+import { PipeModule } from 'src/app/common/pipe/pipe.module';
 
 const routes = [
   { path: '', component: DetailComponent }
@@ -12,7 +13,8 @@ const routes = [
   declarations: [DetailComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    PipeModule
   ],
   exports: [
     RouterModule

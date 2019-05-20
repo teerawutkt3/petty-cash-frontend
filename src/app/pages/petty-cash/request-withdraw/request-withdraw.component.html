@@ -180,7 +180,7 @@
                 <td class="text-right">{{item.amount | decimalFormat:"###,###.00"  }}</td>
                 <td class="text-center">
                   <button class="btn btn-info btn-sm" type="button" title="รายละเอียด"
-                  [routerLink]="['/petty-cash/request-withdraw/detail']" [queryParams]="{ id: item.id }">
+                    [routerLink]="['/petty-cash/request-withdraw/detail']" [queryParams]="{ id: item.id }">
                     <i class="fa fa-eye"></i>
                   </button>
                   <!-- <button (click)="detail(item.id)" class="btn btn-info btn-sm" type="button" title="รายละเอียด"
@@ -282,20 +282,30 @@
 
 
 <!-- The Modal Summary -->
-<div class="modal" id="saummaryModal">
+<div class="modal" id="saummaryModal" style="min-width: 800px importan;margin-left: -45px;">
   <div class="modal-dialog">
     <div class="modal-content">
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">สรุปยอดเงิน</h4>
+        <h4 class="modal-title">สรุป</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body">
-        <p>{{idCheck.length}} รายการ</p>
-        <p>{{amountSum | decimalFormat:"###,###.00" }} บาท</p>
+
+        <b>จำนวนรายการที่ขอเบิก:</b> {{idCheck.length}} รายการ<br><br>
+        <table>
+          <table>
+            <tr *ngFor="let item of pettyCashList">
+              <td>- {{item.description}}</td>
+              <td class="text-right">{{item.amount | decimalFormat:"###,###.00" }}</td>
+            </tr>
+          </table>
+        </table>
+        <hr>
+        <b>จำนวนเงินทั้งหมด:</b> {{amountSum | decimalFormat:"###,###.00" }} บาท<br>
       </div>
 
       <!-- Modal footer -->
